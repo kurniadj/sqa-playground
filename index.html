@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQA Playground — ISO/IEC 25010 Explorer</title>
+  <meta name="description"
+    content="Platform interaktif untuk belajar dan mengevaluasi kualitas perangkat lunak menggunakan model ISO/IEC 25010." />
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="brand-icon">🎓</div>
+      <div>
+        <span>SQA Playground</span>
+        <span class="brand-sub">Penjaminan Mutu Perangkat Lunak (Dosen Kurnia Muludi)</span>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html" class="nav-link">
+        <span class="nav-icon">🏠</span> Explorer
+      </a>
+      <a href="evaluasi.html" class="nav-link">
+        <span class="nav-icon">📋</span> Evaluasi
+      </a>
+      <a href="laporan.html" class="nav-link">
+        <span class="nav-icon">📄</span> Laporan
+      </a>
+    </div>
+    <span class="navbar-badge">ISO/IEC 25010</span>
+  </nav>
+
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="hero-eyebrow">🎯 Tugas-02 — Evaluasi Kualitas Perangkat Lunak</div>
+        <h1>ISO/IEC 25010<br />Quality Model Explorer</h1>
+        <p>Pelajari 8 karakteristik kualitas perangkat lunak beserta sub-karakteristiknya, lalu gunakan tool evaluasi
+          untuk menganalisis aplikasi pilihan Anda.</p>
+        <div class="hero-actions">
+          <a href="evaluasi.html" class="btn btn-primary btn-lg">
+            📋 Mulai Evaluasi Tugas-02
+          </a>
+          <a href="#explorer" class="btn btn-secondary btn-lg">
+            📚 Pelajari Model
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" style="position:relative; z-index:1;">
+
+      <!-- Stats -->
+      <div class="stats-bar" style="margin-top: -24px;">
+        <div class="stat-item">
+          <div class="stat-value">8</div>
+          <div class="stat-label">Karakteristik Utama</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">31</div>
+          <div class="stat-label">Sub-Karakteristik</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2011</div>
+          <div class="stat-label">Tahun Standar</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">ISO</div>
+          <div class="stat-label">Badan Standar Internasional</div>
+        </div>
+      </div>
+
+      <!-- Alert -->
+      <div class="alert alert-info">
+        <span class="alert-icon">💡</span>
+        <div>
+          <strong>Cara Menggunakan:</strong> Klik salah satu kartu di bawah untuk melihat detail sub-karakteristik dan
+          contoh penerapannya. Untuk mengerjakan Tugas-02, klik tombol <strong>"Mulai Evaluasi"</strong> di atas.
+        </div>
+      </div>
+
+      <!-- Explorer -->
+      <section id="explorer">
+        <div class="section-header">
+          <span class="badge badge-primary">Model Kualitas</span>
+          <h2>8 Karakteristik ISO/IEC 25010</h2>
+          <div class="section-divider"></div>
+          <p>Klik kartu untuk melihat sub-karakteristik dan penjelasan lengkapnya</p>
+        </div>
+
+        <div class="characteristics-grid" id="charGrid"></div>
+      </section>
+
+      <!-- Info Section -->
+      <section style="margin-bottom: 60px;">
+        <div class="section-header">
+          <span class="badge badge-accent">Tentang Tugas-02</span>
+          <h2>Panduan Pengerjaan</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-body">
+              <h3 style="font-size:1.05rem; margin-bottom:12px;">📌 Tugas A — Identifikasi Atribut <span
+                  class="badge badge-accent" style="margin-left:6px;">20 poin</span></h3>
+              <ol
+                style="padding-left: 18px; color: var(--text-secondary); font-size: 0.875rem; display:flex; flex-direction:column; gap:8px; margin-top:8px; line-height:1.7;">
+                <li>Sebutkan <strong>minimal 3 atribut kualitas</strong> dari ISO/IEC 25010</li>
+                <li>Jelaskan makna masing-masing atribut <strong>dengan bahasa sendiri</strong></li>
+              </ol>
+              <div
+                style="margin-top: 14px; font-size:0.8rem; padding: 10px 12px; background: var(--surface); border-radius: var(--radius-sm); color: var(--text-secondary);">
+                💡 Gunakan Explorer di atas untuk memahami setiap atribut.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h3 style="font-size:1.05rem; margin-bottom:12px;">📊 Tugas B — Evaluasi Aplikasi <span
+                  class="badge badge-primary" style="margin-left:6px;">40 poin</span></h3>
+              <ol
+                style="padding-left: 18px; color: var(--text-secondary); font-size: 0.875rem; display:flex; flex-direction:column; gap:8px; margin-top:8px; line-height:1.7;">
+                <li>Buat tabel penilaian tiap atribut <strong>(skala 1–5)</strong></li>
+                <li>Jelaskan alasan pemberian nilai</li>
+                <li>Identifikasi <strong>min. 2 kelemahan</strong> kualitas</li>
+                <li>Berikan <strong>2 rekomendasi</strong> perbaikan yang realistis</li>
+              </ol>
+              <a href="evaluasi.html" class="btn btn-blue w-full" style="margin-top:14px; justify-content:center;">
+                🚀 Buka Tool Evaluasi
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <strong>SQA Playground</strong> · Mata Kuliah Penjaminan Mutu Perangkat Lunak · Berbasis ISO/IEC 25010:2011
+  </footer>
+
+  <script src="assets/iso25010.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Build characteristic cards
+    const grid = document.getElementById('charGrid');
+
+    ISO25010.forEach((char, i) => {
+      const starsFromColor = (color) => color; // placeholder
+      const subHTML = char.subcharacteristics.map(s => `
+      <div class="sub-item">
+        <div class="sub-dot" style="background:${char.color}"></div>
+        <div>
+          <div class="sub-item-name">${s.name} <span class="sub-item-nameid">— ${s.nameId}</span></div>
+          <div class="sub-item-desc">${s.desc}</div>
+        </div>
+      </div>
+    `).join('');
+
+      const card = document.createElement('div');
+      card.className = 'char-card fade-in';
+      card.style.animationDelay = `${i * 0.07}s`;
+      card.innerHTML = `
+      <div class="char-card-header" onclick="toggleCard(this.closest('.char-card'))">
+        <div class="char-icon" style="background:${char.color}22; color:${char.color}">${char.icon}</div>
+        <div class="char-info">
+          <div class="char-name-en">${char.name}</div>
+          <div class="char-name-id">${char.nameId}</div>
+        </div>
+        <div class="char-toggle">▼</div>
+      </div>
+      <div class="char-description">${char.description}</div>
+      <div class="char-body">
+        <div class="sub-list">${subHTML}</div>
+        <div class="char-example"><strong>Contoh:</strong> ${char.contoh}</div>
+        <button class="btn btn-sm btn-outline" style="margin-top:12px;" onclick="selectForEval('${char.id}')">
+          ✅ Pilih untuk Evaluasi
+        </button>
+      </div>
+    `;
+      grid.appendChild(card);
+    });
+
+    function toggleCard(card) {
+      card.classList.toggle('expanded');
+    }
+
+    function selectForEval(id) {
+      const data = AppData.get();
+      const selected = data.selectedAttrs || [];
+      if (!selected.includes(id)) {
+        selected.push(id);
+        AppData.update({ selectedAttrs: selected });
+      }
+      window.location.href = 'evaluasi.html';
+    }
+  </script>
+</body>
+
+</html>

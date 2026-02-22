@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQA Playground — Laporan Evaluasi</title>
+    <meta name="description" content="Preview dan cetak laporan evaluasi kualitas perangkat lunak Tugas-02." />
+    <link rel="stylesheet" href="index.css" />
+    <style>
+        /* Screen layout */
+        .laporan-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 768px) {
+            .laporan-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .laporan-sidebar {
+                order: -1;
+            }
+        }
+
+        .laporan-sidebar {
+            position: sticky;
+            top: calc(var(--nav-h) + 20px);
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 14px;
+        }
+
+        .sidebar-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .sidebar-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-info strong {
+            color: var(--text-primary);
+        }
+
+        .score-big {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Report preview document */
+        .report-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            box-shadow: var(--shadow-md);
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #111;
+        }
+
+        .report-header-doc {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .report-header-doc h1 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .report-header-doc p {
+            font-size: 11pt;
+            color: #444;
+            margin-bottom: 2px;
+        }
+
+        .report-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11pt;
+            margin-bottom: 20px;
+        }
+
+        .report-meta-item strong {
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+            margin: 24px 0 12px;
+        }
+
+        .subsection-title {
+            font-size: 11.5pt;
+            font-weight: bold;
+            margin: 16px 0 8px;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            font-size: 11pt;
+        }
+
+        .report-table th {
+            background: #1e40af;
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .report-table td {
+            padding: 7px 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .report-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .star-display {
+            color: #d97706;
+            letter-spacing: 1px;
+        }
+
+        .attr-desc-block {
+            margin-bottom: 12px;
+        }
+
+        .attr-desc-block strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .kelemahan-list,
+        .rekomendasi-list {
+            padding-left: 20px;
+        }
+
+        .kelemahan-list li,
+        .rekomendasi-list li {
+            margin-bottom: 8px;
+        }
+
+        .kesimpulan-block {
+            background: #f8fafc;
+            border-left: 4px solid #1e40af;
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+
+        .page-footer-doc {
+            text-align: center;
+            font-size: 9pt;
+            color: #999;
+            margin-top: 32px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .big-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                background: white;
+                font-size: 11pt;
+            }
+
+            .navbar,
+            .laporan-sidebar,
+            .no-print {
+                display: none !important;
+            }
+
+            .page-wrapper {
+                padding-top: 0;
+            }
+
+            .laporan-wrapper {
+                display: block;
+            }
+
+            .report-container {
+                border: none;
+                box-shadow: none;
+                padding: 20mm 20mm;
+                border-radius: 0;
+            }
+
+            .page-footer-doc {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <span>SQA Playground</span>
+                <span class="brand-sub">Penjaminan Mutu Perangkat Lunak (Dosen Kurnia Muludi)</span>
+            </div>
+        </a>
+        <div class="navbar-links">
+            <a href="index.html" class="nav-link">
+                <span class="nav-icon">🏠</span> Explorer
+            </a>
+            <a href="evaluasi.html" class="nav-link">
+                <span class="nav-icon">📋</span> Evaluasi
+            </a>
+            <a href="laporan.html" class="nav-link">
+                <span class="nav-icon">📄</span> Laporan
+            </a>
+        </div>
+        <span class="navbar-badge">Preview Laporan</span>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="container" style="max-width: 1180px;">
+
+            <!-- Top bar -->
+            <div class="flex items-center justify-between mb-4 no-print" style="margin-bottom: 24px;">
+                <div>
+                    <span class="badge badge-success">📄 Preview Laporan</span>
+                    <h1 style="font-size:1.5rem; margin-top:6px;">Laporan Evaluasi Kualitas</h1>
+                    <p style="color: var(--text-secondary); font-size:0.875rem;">Review laporan di bawah, lalu
+                        cetak/simpan sebagai PDF</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="evaluasi.html" class="btn btn-ghost btn-sm no-print">✏️ Edit Evaluasi</a>
+                    <button class="btn btn-primary btn-sm no-print" onclick="window.print()">🖨️ Print / Save
+                        PDF</button>
+                </div>
+            </div>
+
+            <div class="laporan-wrapper">
+
+                <!-- Sidebar -->
+                <aside class="laporan-sidebar no-print">
+                    <div class="sidebar-card">
+                        <h4>Informasi</h4>
+                        <div class="sidebar-info" id="sidebarInfo">
+                            <span style="color: var(--text-muted); font-style: italic;">Belum ada data...</span>
+                        </div>
+                    </div>
+                    <div class="sidebar-card">
+                        <h4>Rata-rata Nilai</h4>
+                        <div class="score-big" id="avgScore">—</div>
+                        <div class="score-label" id="avgLabel">dari 5.0 maksimal</div>
+                        <div style="margin-top:12px;" id="avgBar"></div>
+                    </div>
+                    <div class="sidebar-card">
+                        <h4>Kelengkapan</h4>
+                        <div id="completenessCheck"
+                            style="font-size:0.8rem; display:flex; flex-direction:column; gap:6px;"></div>
+                    </div>
+                    <button onclick="clearData()" class="btn btn-ghost btn-sm w-full" style="margin-top: 4px;">
+                        🗑️ Reset Data
+                    </button>
+                </aside>
+
+                <!-- Report Preview -->
+                <main>
+                    <div class="report-container" id="reportContainer">
+                        <div class="empty-state" id="emptyState">
+                            <div class="big-icon">📋</div>
+                            <h3 style="font-family:inherit; font-weight:bold; margin-bottom:8px;">Belum Ada Data
+                                Evaluasi</h3>
+                            <p style="font-size:11pt; color:#666; margin-bottom:20px;">
+                                Silakan isi form evaluasi terlebih dahulu untuk melihat preview laporan.
+                            </p>
+                            <a href="evaluasi.html"
+                                style="display:inline-block; background:#1e40af; color:white; padding:10px 24px; border-radius:6px; font-family:'Inter',sans-serif; font-weight:600; text-decoration:none;">
+                                📋 Mulai Evaluasi
+                            </a>
+                        </div>
+                        <div id="reportContent" style="display:none;"></div>
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer no-print">
+        <strong>SQA Playground</strong> · Gunakan Ctrl+P / Cmd+P untuk menyimpan laporan sebagai PDF
+    </footer>
+
+    <script src="assets/iso25010.js"></script>
+    <script src="app.js"></script>
+    <script src="laporan.js"></script>
+</body>
+
+</html>

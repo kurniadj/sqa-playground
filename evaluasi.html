@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQA Playground — Tool Evaluasi Kualitas</title>
+  <meta name="description" content="Form evaluasi kualitas perangkat lunak ISO/IEC 25010 untuk Tugas-02." />
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    .step-panel {
+      display: none;
+    }
+
+    .step-panel.active {
+      display: block;
+      animation: fadeInUp 0.35s ease;
+    }
+
+    .progress-bar-wrap {
+      background: var(--border);
+      border-radius: var(--radius-full);
+      height: 6px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: var(--radius-full);
+      transition: width 0.4s ease;
+    }
+
+    .cat-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .back-btn {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .rating-row td {
+      vertical-align: top;
+      padding: 16px;
+    }
+
+    .alasan-input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      resize: vertical;
+      min-height: 72px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .alasan-input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+    }
+
+    .saved-indicator {
+      font-size: 0.78rem;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.3s;
+      margin-left: 8px;
+    }
+
+    .saved-indicator.show {
+      opacity: 1;
+    }
+
+    h3.step-title {
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+    }
+
+    .step-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 24px;
+    }
+
+    .kelemahan-item,
+    .rekomendasi-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .item-no {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .item-no.accent {
+      background: var(--accent);
+      color: #1a1a1a;
+    }
+
+    /* Tugas A cards */
+    .tugasa-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .tugasa-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tugasa-card-icon {
+      font-size: 1.3rem;
+    }
+
+    .tugasa-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .tugasa-card-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tugasa-card-hint {
+      padding: 10px 16px;
+      background: rgba(30, 64, 175, 0.04);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .tugasa-card-hint strong {
+      color: var(--primary);
+    }
+
+    .tugasa-card-body {
+      padding: 12px 16px;
+    }
+
+    .tugasa-char-count {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="brand-icon">🎓</div>
+      <div>
+        <span>SQA Playground</span>
+        <span class="brand-sub">Penjaminan Mutu Perangkat Lunak (Dosen Kurnia Muludi)</span>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html" class="nav-link">
+        <span class="nav-icon">🏠</span> Explorer
+      </a>
+      <a href="evaluasi.html" class="nav-link">
+        <span class="nav-icon">📋</span> Evaluasi
+      </a>
+      <a href="laporan.html" class="nav-link">
+        <span class="nav-icon">📄</span> Laporan
+      </a>
+    </div>
+    <span class="navbar-badge">Tugas-02</span>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container" style="max-width: 860px;">
+
+      <!-- Page header -->
+      <div style="margin-bottom: 28px;">
+        <div class="flex items-center gap-2" style="margin-bottom: 8px;">
+          <span class="badge badge-primary">📋 Evaluasi Kualitas</span>
+          <span class="saved-indicator" id="savedIndicator">✓ Tersimpan</span>
+        </div>
+        <h1 style="font-size:1.6rem;">Tool Evaluasi ISO/IEC 25010</h1>
+        <p style="color: var(--text-secondary); font-size:0.9rem; margin-top:6px;">
+          Isi form berikut step-by-step. Data disimpan otomatis — Anda bisa melanjutkan kapan saja.
+        </p>
+      </div>
+
+      <!-- Stepper -->
+      <div class="stepper" id="stepper">
+        <div class="step" id="step-indicator-0">
+          <div class="step-item">
+            <div class="step-circle">1</div>
+            <div class="step-label">Info Aplikasi</div>
+          </div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step" id="step-indicator-1">
+          <div class="step-item">
+            <div class="step-circle">2</div>
+            <div class="step-label">Pilih Atribut</div>
+          </div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step" id="step-indicator-2">
+          <div class="step-item">
+            <div class="step-circle">3</div>
+            <div class="step-label">Tugas A</div>
+          </div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step" id="step-indicator-3">
+          <div class="step-item">
+            <div class="step-circle">4</div>
+            <div class="step-label">Penilaian</div>
+          </div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step" id="step-indicator-4">
+          <div class="step-item">
+            <div class="step-circle">5</div>
+            <div class="step-label">Analisis</div>
+          </div>
+          <div style="width: 32px;"></div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+
+      <!-- Card wrapping panels -->
+      <div class="card">
+        <div class="card-body">
+
+          <!-- STEP 1: Info Aplikasi -->
+          <div class="step-panel active" id="panel-0">
+            <h3 class="step-title">📱 Informasi Aplikasi & Mahasiswa</h3>
+            <p class="step-subtitle">Isi data diri dan aplikasi yang akan Anda evaluasi.</p>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Nama Lengkap <span class="required">*</span></label>
+                <input type="text" id="nama" class="form-control" placeholder="Nama lengkap sesuai KTM" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">NIM <span class="required">*</span></label>
+                <input type="text" id="nim" class="form-control" placeholder="Nomor Induk Mahasiswa" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Aplikasi yang Dievaluasi <span class="required">*</span></label>
+              <input type="text" id="appName" class="form-control"
+                placeholder="Contoh: Tokopedia, SIAK NG, WhatsApp..." />
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Kategori Aplikasi <span class="required">*</span></label>
+                <select id="appCategory" class="form-control">
+                  <option value="">— Pilih kategori —</option>
+                  <option value="Akademik">Akademik (LMS, SIAK, e-learning)</option>
+                  <option value="E-commerce">E-commerce (Tokopedia, Shopee, dll.)</option>
+                  <option value="Mobile App">Mobile App (WhatsApp, Gojek, dll.)</option>
+                  <option value="Produktivitas">Produktivitas (Notion, Figma, dll.)</option>
+                  <option value="Perbankan">Perbankan / Fintech</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Platform</label>
+                <select id="platform" class="form-control">
+                  <option value="">— Pilih platform —</option>
+                  <option value="Web Browser">Web Browser</option>
+                  <option value="Android">Android</option>
+                  <option value="iOS">iOS</option>
+                  <option value="Desktop">Desktop</option>
+                  <option value="Multi-platform">Multi-platform</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Deskripsi Singkat Aplikasi</label>
+              <textarea id="appDesc" class="form-control" rows="3"
+                placeholder="Jelaskan secara singkat fungsi utama aplikasi tersebut..."></textarea>
+              <div class="form-hint">Opsional, akan muncul di bagian pendahuluan laporan</div>
+            </div>
+
+            <div class="nav-btns">
+              <button class="btn btn-primary" onclick="nextStep()">
+                Selanjutnya → Pilih Atribut
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Pilih Atribut -->
+          <div class="step-panel" id="panel-1">
+            <h3 class="step-title">✅ Pilih Atribut Kualitas</h3>
+            <p class="step-subtitle">Pilih <strong>minimal 3</strong> dari 8 karakteristik ISO/IEC 25010 untuk
+              dievaluasi. <a href="index.html" style="color:var(--primary);">Lihat penjelasan →</a></p>
+
+            <div class="alert alert-warning" id="minAttrAlert" style="display:none;">
+              <span class="alert-icon">⚠️</span>
+              <span>Pilih minimal <strong>3 atribut</strong> untuk melanjutkan.</span>
+            </div>
+
+            <div class="checkbox-grid" id="attrCheckboxes"></div>
+
+            <div class="nav-btns">
+              <span class="back-btn" onclick="prevStep()">← Kembali</span>
+              <button class="btn btn-primary" onclick="nextStep()">
+                Selanjutnya → Tugas A
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Tugas A — Jelaskan Atribut -->
+          <div class="step-panel" id="panel-2">
+            <h3 class="step-title">📝 Tugas A — Identifikasi Atribut Kualitas</h3>
+            <p class="step-subtitle">
+              Jelaskan makna setiap atribut yang Anda pilih <strong>dengan bahasa sendiri</strong>.
+              Tidak boleh copy-paste dari definisi buku/ISO — tulis dengan pemahaman Anda.
+            </p>
+
+            <div class="alert alert-info">
+              <span class="alert-icon">💡</span>
+              <div>
+                <strong>Tips:</strong> Bayangkan menjelaskan kepada teman yang belum pernah belajar SQA.
+                Gunakan contoh sederhana dari kehidupan sehari-hari jika perlu.
+                Referensi definisi standar ditampilkan sebagai panduan.
+              </div>
+            </div>
+
+            <div id="tugasACards"></div>
+
+            <div class="nav-btns">
+              <span class="back-btn" onclick="prevStep()">← Kembali</span>
+              <button class="btn btn-primary" onclick="nextStep()">
+                Selanjutnya → Penilaian
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Penilaian -->
+          <div class="step-panel" id="panel-3">
+            <h3 class="step-title">📊 Tugas B — Tabel Penilaian Kualitas</h3>
+            <p class="step-subtitle">Beri nilai <strong>1–5</strong> untuk setiap atribut dan jelaskan alasannya.</p>
+
+            <div class="alert alert-info">
+              <span class="alert-icon">📌</span>
+              <div><strong>Skala:</strong> 1 = Sangat Buruk &nbsp;|&nbsp; 2 = Buruk &nbsp;|&nbsp; 3 = Cukup
+                &nbsp;|&nbsp; 4 = Baik &nbsp;|&nbsp; 5 = Sangat Baik</div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="rating-table" id="ratingTable">
+                <thead>
+                  <tr>
+                    <th style="width:200px;">Atribut</th>
+                    <th style="width:180px;">Nilai (1–5)</th>
+                    <th>Alasan Pemberian Nilai</th>
+                  </tr>
+                </thead>
+                <tbody id="ratingBody"></tbody>
+              </table>
+            </div>
+
+            <div class="nav-btns">
+              <span class="back-btn" onclick="prevStep()">← Kembali</span>
+              <button class="btn btn-primary" onclick="nextStep()">
+                Selanjutnya → Analisis
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 5: Analisis -->
+          <div class="step-panel" id="panel-4">
+            <h3 class="step-title">🔍 Analisis Kelemahan & Rekomendasi</h3>
+            <p class="step-subtitle">Bagian ini wajib untuk menyelesaikan Tugas-02.</p>
+
+            <div class="form-group">
+              <h4 style="font-size:0.95rem; margin-bottom:14px; color: var(--danger);">
+                ⚠️ Identifikasi Kelemahan (min. 2)
+              </h4>
+              <div class="kelemahan-item">
+                <div class="item-no">1</div>
+                <textarea id="kelemahan1" class="alasan-input"
+                  placeholder="Jelaskan kelemahan pertama yang Anda temukan pada aplikasi tersebut..."></textarea>
+              </div>
+              <div class="kelemahan-item">
+                <div class="item-no">2</div>
+                <textarea id="kelemahan2" class="alasan-input"
+                  placeholder="Jelaskan kelemahan kedua yang Anda temukan..."></textarea>
+              </div>
+              <div class="kelemahan-item" id="kelemahan3Group">
+                <div class="item-no">3</div>
+                <textarea id="kelemahan3" class="alasan-input" placeholder="(Opsional) Kelemahan ketiga..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <h4 style="font-size:0.95rem; margin-bottom:14px; color: var(--success);">
+                💡 Rekomendasi Perbaikan (min. 2)
+              </h4>
+              <div class="rekomendasi-item">
+                <div class="item-no accent">1</div>
+                <textarea id="rekomendasi1" class="alasan-input"
+                  placeholder="Rekomendasi perbaikan pertama yang realistis dan spesifik..."></textarea>
+              </div>
+              <div class="rekomendasi-item">
+                <div class="item-no accent">2</div>
+                <textarea id="rekomendasi2" class="alasan-input"
+                  placeholder="Rekomendasi perbaikan kedua..."></textarea>
+              </div>
+              <div class="rekomendasi-item" id="rekomendasi3Group">
+                <div class="item-no accent">3</div>
+                <textarea id="rekomendasi3" class="alasan-input"
+                  placeholder="(Opsional) Rekomendasi ketiga..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Kesimpulan Singkat</label>
+              <textarea id="kesimpulan" class="form-control" rows="3"
+                placeholder="Berikan kesimpulan umum tentang kualitas aplikasi yang Anda evaluasi..."></textarea>
+            </div>
+
+            <div class="nav-btns">
+              <span class="back-btn" onclick="prevStep()">← Kembali</span>
+              <a href="laporan.html" id="generateBtn" class="btn btn-success btn-lg" onclick="saveAndGenerate()">
+                📄 Generate Laporan
+              </a>
+            </div>
+          </div>
+
+        </div><!-- card-body -->
+      </div><!-- card -->
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <strong>SQA Playground</strong> · Data tersimpan otomatis di browser Anda
+  </footer>
+
+  <script src="assets/iso25010.js"></script>
+  <script src="app.js"></script>
+  <script src="evaluasi.js"></script>
+</body>
+
+</html>
